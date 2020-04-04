@@ -4,33 +4,23 @@ fn main() {
 }
 
 fn is_prime(n: i64) -> bool {
-    if n == 0 || n == 1 {
+    if n == 0 || n == 1 || is_even(n) {
         return false;
     }
 
-    let factors_table = factors(n);
-    if factors_table.len() != 0 {
-        return false;
+    for i in 3..((n as f64).sqrt() as i64) {
+        if is_even(n) {
+            continue;
+        }
+        if n as f64 % i as f64 == 0.0 {
+            return false;
+        }
     }
-
     true
 }
 
 fn is_even(n: i64) -> bool {
     n & 1 == 0
-}
-
-fn factors(n: i64) -> Vec<i64> {
-    let mut factors = Vec::new();
-    for i in 2..n {
-        if is_even(n) {
-            continue;
-        }
-        if n as f64 % i as f64 == 0.0 {
-            factors.push(i);
-        }
-    }
-    factors
 }
 
 fn biggest_prime_factor_brute_force(n: i64) -> i64 {
