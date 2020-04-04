@@ -1,41 +1,28 @@
+struct Fibonacci {
+    a: i64,
+    b: i64,
+}
+
+impl Fibonacci {
+    fn new() -> Fibonacci {
+        Fibonacci { a: 0, b: 1 }
+    }
+}
+
+impl Iterator for Fibonacci {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        let x = self.a;
+        self.a = self.b;
+        self.b += x;
+        Some(x)
+    }
+}
+
 fn main() {
-    println!("{}", sum_even_valued_terms());
-    println!("{}", sum_even_valued_terms_with_memoize());
-}
-
-const SIZE: usize = 10;
-
-fn sum_even_valued_terms() -> usize {
-    let mut fib_sum = 0;
-    let mut fib_current = 0;
-    let mut fib_next = 1;
-
-    for _ in 1..SIZE {
-        let fib_total = fib_current + fib_next;
-        fib_current = fib_next;
-        fib_next = fib_total;
-
-        if fib_total % 2 == 0 {
-            fib_sum += fib_total;
-        }
-    }
-
-    fib_sum
-}
-
-fn sum_even_valued_terms_with_memoize() -> usize {
-    let mut sum = 0;
-    let mut memo: [Option<usize>; SIZE] = [None; SIZE];
-    memo[0] = Some(1);
-    memo[1] = Some(1);
-
-    for i in 2..SIZE {
-        memo[i] = Some(memo[i - 1].unwrap() + memo[i - 2].unwrap());
-
-        if memo[i].unwrap() % 2 == 0 {
-            sum += memo[i].unwrap();
-        }
-    }
-
-    sum
+    let s: i64 = Fibonacci::new()
+        .filter(|&f| f % 2 == 0)
+        .take_while(|&f| f <= 4_000_000)
+        .sum();
+    println!("{}", s);
 }
