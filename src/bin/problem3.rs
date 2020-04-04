@@ -16,9 +16,16 @@ fn is_prime(n: i64) -> bool {
     true
 }
 
+fn is_even(n: i64) -> bool {
+    n & 1 == 0
+}
+
 fn factors(n: i64) -> Vec<i64> {
     let mut factors = Vec::new();
     for i in 2..n {
+        if is_even(n) {
+            continue;
+        }
         if n as f64 % i as f64 == 0.0 {
             factors.push(i);
         }
